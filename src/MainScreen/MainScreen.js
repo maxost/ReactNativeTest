@@ -6,6 +6,7 @@ import React, {Component} from 'react'
 import {AppRegistry, StyleSheet, Text, View, Button} from 'react-native'
 import Tabs from 'react-native-tabs'
 import {StackNavigator} from 'react-navigation';
+import List from './Tabs/List/List'
 
 export default function register() {
     AppRegistry.registerComponent('RNWSTP', () => MyStackNavigator);
@@ -13,9 +14,7 @@ export default function register() {
 
 class MainScreen extends Component {
 
-    static navigationOptions = {
-        title: 'Main',
-    };
+    static navigationOptions = { title: 'Main' };
 
     constructor(props) {
         super(props);
@@ -25,37 +24,42 @@ class MainScreen extends Component {
     }
 
     render() {
-        const {page} = this.state;
-
         let tab = null;
-        switch (page) {
+        switch (this.state.page) {
             case 'First': {
                 tab = <First
-                    navigation = { this.props.navigation }
+                    navigation={ this.props.navigation }
                 />;
                 break
             }
             case 'Second': {
                 tab = <Second
-                    navigation = { this.props.navigation }
+                    navigation={ this.props.navigation }
+                />;
+                break
+            }
+            case 'List': {
+                tab = <List
+                    naviagtion={ this.props.navigation }
                 />;
                 break
             }
         }
 
         return (
-            <View style={styles.container}>
+            <View style={styles.mainContainer}>
 
                 { tab }
 
                 <Tabs
-                    selected={ page }
+                    selected={ this.state.page }
                     style={ styles.tabbar }
                     selectedStyle={ {color: 'red'} }
                     onSelect={ tab => this.setState({page: tab.props.name}) }
                 >
                     <Text name="First">First</Text>
                     <Text name="Second">Second</Text>
+                    <Text name="List">List</Text>
                 </Tabs>
             </View>
         )
@@ -63,14 +67,13 @@ class MainScreen extends Component {
 }
 
 class First extends Component {
-
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.info}>
                 <Text style={ styles.welcome }>First Tab</Text>
                 <Button
                     title="Show Details"
-                    onPress={ () => this.props.navigation.navigate('DetailsScreen', { text: "First" }) }
+                    onPress={ () => this.props.navigation.navigate('DetailsScreen', {text: "First"}) }
                 />
             </View>
         )
@@ -81,11 +84,11 @@ class Second extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.info}>
                 <Text style={ styles.welcome }>Second Tab</Text>
                 <Button
                     title="Show Details"
-                    onPress={ () => this.props.navigation.navigate('DetailsScreen', { text: "Second" }) }
+                    onPress={ () => this.props.navigation.navigate('DetailsScreen', {text: "Second"}) }
                 />
             </View>
         )
@@ -102,7 +105,7 @@ class DetailsScreen extends React.Component {
         const {params} = this.props.navigation.state;
 
         return (
-            <View style={styles.container}>
+            <View style={styles.mainContainer}>
                 <Text style={styles.instructions}>
                     Hello, { params.text }!
                 </Text>
@@ -117,7 +120,11 @@ const MyStackNavigator = StackNavigator({
 });
 
 const styles = StyleSheet.create({
-    container: {
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+    },
+    info: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -138,5 +145,5 @@ const styles = StyleSheet.create({
         height: 48,
         borderTopColor: 'red',
         borderTopWidth: 1
-    }
+    },
 });

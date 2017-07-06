@@ -4,6 +4,6 @@
  * @flow
  */
 
-import register from './src/MainScreen';
+import register from './src/MainScreen/MainScreen';
 
 register();
